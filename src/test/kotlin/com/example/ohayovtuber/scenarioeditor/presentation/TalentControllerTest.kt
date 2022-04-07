@@ -15,7 +15,7 @@ class TalentControllerTests(
 ) {
 
     @Test
-    fun `get hello`() {
+    fun `リクエストに成功する`() {
         val entity = template.getForEntity<String>("/")
         assertEquals(HttpStatus.OK, entity.statusCode)
         assertEquals("Greetings from Spring Boot!", entity.body)
