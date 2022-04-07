@@ -1,12 +1,12 @@
 package com.example.oshikara.scenarioeditor.domain
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class TalentTest {
 
     @Test
-    fun `新しくタレントを作成すると、非公開のインスタンスが生成される`(){
+    fun `新しくタレントを作成すると、非公開のインスタンスが生成される`() {
         val name = TalentName("山田ナターシア 46Billion☆")
         val status = TalentStatus.PRIVATE
         val talent = Talent.create(name)

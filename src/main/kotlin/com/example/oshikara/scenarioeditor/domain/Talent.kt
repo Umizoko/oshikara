@@ -4,7 +4,7 @@ import com.example.oshikara.scenarioeditor.infrastructure.UuidGenerator
 
 // FIXME Format
 
-data class TalentId(val value : String) {
+data class TalentId(val value: String) {
     constructor() : this(UuidGenerator.random())
 }
 
@@ -14,13 +14,12 @@ data class TalentName(val value: String) {
     }
 }
 
-enum class TalentStatus{
+enum class TalentStatus {
 
     PRIVATE,
 
     PUBLIC
 }
-
 
 class Talent private constructor(
     id: TalentId,
@@ -35,7 +34,7 @@ class Talent private constructor(
         private set
 
     companion object {
-        fun create(name: TalentName) : Talent =
+        fun create(name: TalentName): Talent =
             Talent(
                 id = TalentId(),
                 name = name,
