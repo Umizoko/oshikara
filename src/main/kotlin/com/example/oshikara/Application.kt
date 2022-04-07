@@ -1,11 +1,11 @@
-package com.example.ohayovtuber
+package com.example.oshikara
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class OhayoVtuberApplication
+class Application
 
 fun main(args: Array<String>) {
-	runApplication<OhayoVtuberApplication>(*args)
+	runApplication<Application>(*args)
 }

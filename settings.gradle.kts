@@ -1,1 +1,1 @@
-rootProject.name = "ohayo-vtuber"
+rootProject.name = "oshikara"

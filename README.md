@@ -1,4 +1,4 @@
-ohayo-vtuber application
+oshikara
 推し通知システム、朝をより楽しく
 
 ドメインモデル
