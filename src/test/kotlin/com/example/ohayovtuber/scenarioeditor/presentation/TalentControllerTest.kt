@@ -2,7 +2,6 @@ package com.example.ohayovtuber.scenarioeditor.presentation
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -16,7 +15,7 @@ class TalentControllerTests(
 
     @Test
     fun `リクエストに成功する`() {
-        val entity = template.getForEntity<String>("/")
+        val entity = template.getForEntity<String>(url = "/")
         assertEquals(HttpStatus.OK, entity.statusCode)
         assertEquals("Greetings from Spring Boot!", entity.body)
     }
