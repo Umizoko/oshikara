@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController
 class TalentController {
 
     @GetMapping("/")
-    fun index() : String = "Greetings from Spring Boot!"
+    fun index(): String = "Greetings from Spring Boot!"
 }

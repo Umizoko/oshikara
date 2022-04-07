@@ -9,7 +9,7 @@ import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.http.HttpStatus
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TalentControllerTests(
+class TalentControllerTest(
     @Autowired private val template: TestRestTemplate
 ) {
 
