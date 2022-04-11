@@ -14,7 +14,7 @@ object TestUtil {
         flyway.migrate()
         Database.connect(
             url = "jdbc:mysql://host.docker.internal:3306/oshikara",
-            driver = "com.mysql.jdbc.Driver",
+            driver = "com.mysql.cj.jdbc.Driver",
             user = "user",
             password = "password"
         )
