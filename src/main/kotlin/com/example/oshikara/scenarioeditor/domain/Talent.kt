@@ -2,8 +2,6 @@ package com.example.oshikara.scenarioeditor.domain
 
 import com.example.oshikara.scenarioeditor.infrastructure.UuidGenerator
 
-// FIXME Format
-
 data class TalentId(val value: String) {
     constructor() : this(UuidGenerator.random())
 }
