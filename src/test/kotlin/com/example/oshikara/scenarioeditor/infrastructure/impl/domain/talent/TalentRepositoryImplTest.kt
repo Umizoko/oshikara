@@ -1,8 +1,8 @@
 package com.example.oshikara.scenarioeditor.infrastructure.impl.domain.talent
 
-import com.example.oshikara.scenarioeditor.domain.Talent
-import com.example.oshikara.scenarioeditor.domain.TalentName
-import com.example.oshikara.scenarioeditor.domain.TalentRepository
+import com.example.oshikara.scenarioeditor.domain.talent.Talent
+import com.example.oshikara.scenarioeditor.domain.talent.TalentName
+import com.example.oshikara.scenarioeditor.domain.talent.TalentRepository
 import com.example.oshikara.scenarioeditor.infrastructure.impl.domain.TestUtil
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -34,4 +34,16 @@ internal class TalentRepositoryImplTest(
         )
         talentRepository.insert(talent)
     }
+
+//    @Test
+//    fun `タレントの名前の変更に成功する`() {
+//        val talent = Talent.create(
+//            name = TalentName("夢見 太郎")
+//        )
+//        talentRepository.insert(talent)
+//
+//        talent.changeName("変換 誤太郎")
+//        val changeNameTalent = talentRepository.update(talent)
+//
+//    }
 }

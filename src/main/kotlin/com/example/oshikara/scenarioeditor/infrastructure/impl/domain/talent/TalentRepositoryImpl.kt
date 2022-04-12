@@ -1,7 +1,7 @@
 package com.example.oshikara.scenarioeditor.infrastructure.impl.domain.talent
 
-import com.example.oshikara.scenarioeditor.domain.Talent
-import com.example.oshikara.scenarioeditor.domain.TalentRepository
+import com.example.oshikara.scenarioeditor.domain.talent.Talent
+import com.example.oshikara.scenarioeditor.domain.talent.TalentRepository
 import com.example.oshikara.scenarioeditor.infrastructure.model.Talents
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction

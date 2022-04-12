@@ -1,15 +1,9 @@
-package com.example.oshikara.scenarioeditor.domain
+package com.example.oshikara.scenarioeditor.domain.talent
 
 import com.example.oshikara.scenarioeditor.infrastructure.UuidGenerator
 
 data class TalentId(val value: String) {
     constructor() : this(UuidGenerator.random())
-}
-
-data class TalentName(val value: String) {
-    init {
-        // TODO ヴァリデーションを追加
-    }
 }
 
 enum class TalentStatus {
@@ -46,5 +40,9 @@ class Talent private constructor(
 
     fun private() {
         this.status = TalentStatus.PRIVATE
+    }
+
+    fun changeName(name: TalentName) {
+        this.name = name
     }
 }

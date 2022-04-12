@@ -1,4 +1,4 @@
-package com.example.oshikara.scenarioeditor.domain
+package com.example.oshikara.scenarioeditor.domain.talent
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -33,5 +33,16 @@ internal class TalentTest {
         talent.private()
 
         assertEquals(TalentStatus.PRIVATE, talent.status)
+    }
+
+    @Test
+    fun `タレントの名前を変更すると、インスタンスの名前が変更後のものになる`() {
+        val nameBeforeChangeName = TalentName("夢見 太郎")
+        val talent = Talent.create(nameBeforeChangeName)
+        val newName = TalentName("変換 ゴタロウ")
+
+        talent.changeName(newName)
+
+        assertEquals(newName, talent.name)
     }
 }
