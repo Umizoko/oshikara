@@ -3,4 +3,4 @@ spring:
     url: jdbc:mysql://host.docker.internal:3306/oshikara
     username: user
     password: password
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver

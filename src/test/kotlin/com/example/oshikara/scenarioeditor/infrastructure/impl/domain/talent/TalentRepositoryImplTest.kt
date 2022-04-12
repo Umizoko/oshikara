@@ -3,8 +3,7 @@ package com.example.oshikara.scenarioeditor.infrastructure.impl.domain.talent
 import com.example.oshikara.scenarioeditor.domain.Talent
 import com.example.oshikara.scenarioeditor.domain.TalentName
 import com.example.oshikara.scenarioeditor.domain.TalentRepository
-import org.flywaydb.core.Flyway
-import org.jetbrains.exposed.sql.Database
+import com.example.oshikara.scenarioeditor.infrastructure.impl.domain.TestUtil
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,23 +15,16 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 internal class TalentRepositoryImplTest(
     @Autowired private val talentRepository: TalentRepository,
-    @Autowired private val flyway: Flyway // FIXME DB infra直接参照させるのはいただけない
 ) {
 
     @BeforeEach
     fun setup() {
-        flyway.migrate()
-        Database.connect(
-            url = "jdbc:mysql://host.docker.internal:3306/oshikara",
-            driver = "com.mysql.jdbc.Driver",
-            user = "user",
-            password = "password"
-        )
+        TestUtil.setup()
     }
 
     @AfterEach
     fun teardown() {
-        flyway.clean()
+        TestUtil.teardown()
     }
 
     @Test
