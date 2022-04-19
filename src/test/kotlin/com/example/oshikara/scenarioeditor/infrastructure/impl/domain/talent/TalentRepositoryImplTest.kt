@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,28 +37,21 @@ internal class TalentRepositoryImplTest(
 
     @Test
     fun `タレントの作成に成功する`() {
-        val talentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
-        val talentName = TalentName("tanaka taro")
-        val talentStatus = TalentStatus.PRIVATE
-        val talent = Talent.reconstruct(
-            id = talentId,
-            name = talentName,
-            status = talentStatus
-        )
+        val createTalent = TestTalentFactory.create()
 
-        talentRepository.insert(talent)
-
+        talentRepository.insert(createTalent)
         val insertTalent = transaction {
-            Talents.select { Talents.id eq talentId.value }.single()
+            Talents.select { Talents.id eq createTalent.id.value }.single()
         }
 
-        assertEquals(talentId.value, insertTalent[Talents.id])
-        assertEquals(talentName.value, insertTalent[Talents.name])
-        assertEquals(talentStatus.name, insertTalent[Talents.status])
+        assertEquals(createTalent.id.value, insertTalent[Talents.id])
+        assertEquals(createTalent.name.value, insertTalent[Talents.name])
+        assertEquals(createTalent.status.name, insertTalent[Talents.status])
     }
 
     @Test
     fun `insertしたタレントでtalentIdが同じ時updateで更新できる`() {
+        // FIXME : テストデータ作成用objectの書き換え
         val talentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
         val talentName = TalentName("tanaka taro")
         val talentStatus = TalentStatus.PRIVATE
@@ -68,27 +62,25 @@ internal class TalentRepositoryImplTest(
                 it[status] = talentStatus.name
             }
         }
-        val newTalentName = TalentName("yamada hanako")
-        val newTalentStatus = TalentStatus.PUBLIC
-        val newTalent = Talent.reconstruct(
-            id = talentId,
-            name = newTalentName,
-            status = newTalentStatus
+        val newTalent = TestTalentFactory.create(
+            talentId = talentId,
+            talentName = TalentName("yamada hanako"),
+            talentStatus = TalentStatus.PUBLIC
         )
 
         talentRepository.update(newTalent)
-
         val updateTalent = transaction {
             Talents.select { Talents.id eq talentId.value }.single()
         }
 
-        assertEquals(talentId.value, updateTalent[Talents.id])
-        assertEquals(newTalentName.value, updateTalent[Talents.name])
-        assertEquals(newTalentStatus.name, updateTalent[Talents.status])
+        assertEquals(newTalent.id.value, updateTalent[Talents.id])
+        assertEquals(newTalent.name.value, updateTalent[Talents.name])
+        assertEquals(newTalent.status.name, updateTalent[Talents.status])
     }
 
     @Test
     fun `insertしたタレントでtalentIdが異なる時updateで更新されない`() {
+        // FIXME テストデータ作成用のオブジェクトに書き換え
         val talentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
         val talentName = TalentName("tanaka taro")
         val talentStatus = TalentStatus.PRIVATE
@@ -99,13 +91,10 @@ internal class TalentRepositoryImplTest(
                 it[status] = talentStatus.name
             }
         }
-        val newTalentId = TalentId("0392bb37-64af-467d-ac2e-95ecc0bc759c")
-        val newTalentName = TalentName("yamada hanako")
-        val newTalentStatus = TalentStatus.PUBLIC
-        val newTalent = Talent.reconstruct(
-            id = newTalentId,
-            name = newTalentName,
-            status = newTalentStatus
+        val newTalent = TestTalentFactory.create(
+            talentId = TalentId("0392bb37-64af-467d-ac2e-95ecc0bc759c"),
+            talentName = TalentName("yamada hanako"),
+            talentStatus = TalentStatus.PUBLIC
         )
 
         talentRepository.update(newTalent)
@@ -121,17 +110,10 @@ internal class TalentRepositoryImplTest(
 
     @Test
     fun `insertしたものがfindByIdで取得できる`() {
-        val createTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
-        val createTalentName = TalentName("tanaka taro")
-        val createTalentStatus = TalentStatus.PRIVATE
-        val createTalent = Talent.reconstruct(
-            id = createTalentId,
-            name = createTalentName,
-            status = createTalentStatus
-        )
+        val createTalent = TestTalentFactory.create()
 
         talentRepository.insert(createTalent)
-        val foundTalent = talentRepository.findById(createTalentId)
+        val foundTalent = talentRepository.findById(createTalent.id)
 
         assertEquals(createTalent.id, foundTalent?.id)
         assertEquals(createTalent.name, foundTalent?.name)
@@ -140,19 +122,24 @@ internal class TalentRepositoryImplTest(
 
     @Test
     fun `findByIdで見つからない場合、nullを返す`() {
-        val createTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
-        val createTalentName = TalentName("tanaka taro")
-        val createTalentStatus = TalentStatus.PRIVATE
-        val createTalent = Talent.reconstruct(
-            id = createTalentId,
-            name = createTalentName,
-            status = createTalentStatus
-        )
+        val createTalent = TestTalentFactory.create()
         val foundTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc012")
 
         talentRepository.insert(createTalent)
         val foundTalent = talentRepository.findById(foundTalentId)
 
-        assertEquals(foundTalent, null)
+        assertNull(foundTalent)
     }
+}
+
+object TestTalentFactory {
+    fun create(
+        talentId: TalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011"),
+        talentName: TalentName = TalentName("tanaka taro"),
+        talentStatus: TalentStatus = TalentStatus.PRIVATE
+    ) = Talent.reconstruct(
+        id = talentId,
+        name = talentName,
+        status = talentStatus
+    )
 }
