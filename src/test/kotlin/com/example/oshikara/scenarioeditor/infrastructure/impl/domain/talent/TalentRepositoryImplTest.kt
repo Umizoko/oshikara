@@ -118,4 +118,23 @@ internal class TalentRepositoryImplTest(
         assertEquals(talentName.value, talent[Talents.name])
         assertEquals(talentStatus.name, talent[Talents.status])
     }
+
+    @Test
+    fun `insertしたものがfindByIdで取得できる`() {
+        val createTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
+        val createTalentName = TalentName("tanaka taro")
+        val createTalentStatus = TalentStatus.PRIVATE
+        val createTalent = Talent.reconstruct(
+            id = createTalentId,
+            name = createTalentName,
+            status = createTalentStatus
+        )
+
+        talentRepository.insert(createTalent)
+        val foundTalent = talentRepository.findById(createTalentId)
+
+        assertEquals(createTalent.id, foundTalent?.id)
+        assertEquals(createTalent.name, foundTalent?.name)
+        assertEquals(createTalent.status, foundTalent?.status)
+    }
 }
