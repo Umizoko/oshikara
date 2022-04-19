@@ -32,6 +32,18 @@ class Talent private constructor(
                 name = name,
                 status = TalentStatus.PRIVATE
             )
+
+        fun reconstruct(
+            id: TalentId,
+            name: TalentName,
+            status: TalentStatus
+        ): Talent {
+            return Talent(
+                id = id,
+                name = name,
+                status = status
+            )
+        }
     }
 
     fun public() {

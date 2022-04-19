@@ -45,4 +45,21 @@ internal class TalentTest {
 
         assertEquals(newName, talent.name)
     }
+
+    @Test
+    fun `reconstructに値を渡すと、渡した値でインスタンスを生成する`() {
+        val id = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
+        val name = TalentName("鷲尾 太郎丸")
+        val status = TalentStatus.PUBLIC
+
+        val talent = Talent.reconstruct(
+            id = id,
+            name = name,
+            status = status
+        )
+
+        assertEquals(id, talent.id)
+        assertEquals(name, talent.name)
+        assertEquals(status, talent.status)
+    }
 }
