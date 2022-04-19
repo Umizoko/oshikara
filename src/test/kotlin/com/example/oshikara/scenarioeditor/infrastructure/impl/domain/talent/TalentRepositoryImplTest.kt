@@ -137,4 +137,22 @@ internal class TalentRepositoryImplTest(
         assertEquals(createTalent.name, foundTalent?.name)
         assertEquals(createTalent.status, foundTalent?.status)
     }
+
+    @Test
+    fun `findByIdで見つからない場合、nullを返す`() {
+        val createTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
+        val createTalentName = TalentName("tanaka taro")
+        val createTalentStatus = TalentStatus.PRIVATE
+        val createTalent = Talent.reconstruct(
+            id = createTalentId,
+            name = createTalentName,
+            status = createTalentStatus
+        )
+        val foundTalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc012")
+
+        talentRepository.insert(createTalent)
+        val foundTalent = talentRepository.findById(foundTalentId)
+
+        assertEquals(foundTalent, null)
+    }
 }
