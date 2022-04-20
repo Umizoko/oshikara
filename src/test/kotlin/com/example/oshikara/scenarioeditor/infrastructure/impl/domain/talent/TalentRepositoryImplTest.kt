@@ -1,13 +1,13 @@
 package com.example.oshikara.scenarioeditor.infrastructure.impl.domain.talent
 
-import com.example.oshikara.scenarioeditor.domain.talent.Talent
 import com.example.oshikara.scenarioeditor.domain.talent.TalentId
 import com.example.oshikara.scenarioeditor.domain.talent.TalentName
 import com.example.oshikara.scenarioeditor.domain.talent.TalentRepository
 import com.example.oshikara.scenarioeditor.domain.talent.TalentStatus
+import com.example.oshikara.scenarioeditor.infrastructure.datacreator.TalentTestDataCreator
+import com.example.oshikara.scenarioeditor.infrastructure.factory.TestTalentFactory
 import com.example.oshikara.scenarioeditor.infrastructure.impl.domain.TestUtil
 import com.example.oshikara.scenarioeditor.infrastructure.model.Talents
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterEach
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 internal class TalentRepositoryImplTest(
     @Autowired private val talentRepository: TalentRepository,
+    @Autowired private val talentTestDataCreator: TalentTestDataCreator
 ) {
 
     @BeforeEach
@@ -51,26 +52,16 @@ internal class TalentRepositoryImplTest(
 
     @Test
     fun `insertしたタレントでtalentIdが同じ時updateで更新できる`() {
-        // FIXME : テストデータ作成用objectの書き換え
-        val talentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
-        val talentName = TalentName("tanaka taro")
-        val talentStatus = TalentStatus.PRIVATE
-        transaction {
-            Talents.insert {
-                it[id] = talentId.value
-                it[name] = talentName.value
-                it[status] = talentStatus.name
-            }
-        }
+        val talent = talentTestDataCreator.create()
         val newTalent = TestTalentFactory.create(
-            talentId = talentId,
+            talentId = talent.id,
             talentName = TalentName("yamada hanako"),
             talentStatus = TalentStatus.PUBLIC
         )
 
         talentRepository.update(newTalent)
         val updateTalent = transaction {
-            Talents.select { Talents.id eq talentId.value }.single()
+            Talents.select { Talents.id eq talent.id.value }.single()
         }
 
         assertEquals(newTalent.id.value, updateTalent[Talents.id])
@@ -80,17 +71,7 @@ internal class TalentRepositoryImplTest(
 
     @Test
     fun `insertしたタレントでtalentIdが異なる時updateで更新されない`() {
-        // FIXME テストデータ作成用のオブジェクトに書き換え
-        val talentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011")
-        val talentName = TalentName("tanaka taro")
-        val talentStatus = TalentStatus.PRIVATE
-        transaction {
-            Talents.insert {
-                it[id] = talentId.value
-                it[name] = talentName.value
-                it[status] = talentStatus.name
-            }
-        }
+        val createTalent = talentTestDataCreator.create()
         val newTalent = TestTalentFactory.create(
             talentId = TalentId("0392bb37-64af-467d-ac2e-95ecc0bc759c"),
             talentName = TalentName("yamada hanako"),
@@ -99,13 +80,13 @@ internal class TalentRepositoryImplTest(
 
         talentRepository.update(newTalent)
 
-        val talent = transaction {
-            Talents.select { Talents.id eq talentId.value }.single()
+        val response = transaction {
+            Talents.select { Talents.id eq createTalent.id.value }.single()
         }
 
-        assertEquals(talentId.value, talent[Talents.id])
-        assertEquals(talentName.value, talent[Talents.name])
-        assertEquals(talentStatus.name, talent[Talents.status])
+        assertEquals(createTalent.id.value, response[Talents.id])
+        assertEquals(createTalent.name.value, response[Talents.name])
+        assertEquals(createTalent.status.name, response[Talents.status])
     }
 
     @Test
@@ -130,16 +111,4 @@ internal class TalentRepositoryImplTest(
 
         assertNull(foundTalent)
     }
-}
-
-object TestTalentFactory {
-    fun create(
-        talentId: TalentId = TalentId("b3816239-389c-4dc1-a8e8-ccc63d3bc011"),
-        talentName: TalentName = TalentName("tanaka taro"),
-        talentStatus: TalentStatus = TalentStatus.PRIVATE
-    ) = Talent.reconstruct(
-        id = talentId,
-        name = talentName,
-        status = talentStatus
-    )
 }
