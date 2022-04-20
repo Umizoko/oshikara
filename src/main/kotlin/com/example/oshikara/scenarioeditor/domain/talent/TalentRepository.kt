@@ -4,4 +4,6 @@ interface TalentRepository {
     fun insert(talent: Talent)
 
     fun update(talent: Talent)
+
+    fun findById(talentId: TalentId): Talent?
 }
