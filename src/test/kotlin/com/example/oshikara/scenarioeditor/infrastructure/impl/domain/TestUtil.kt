@@ -7,13 +7,13 @@ object TestUtil {
 
     private val flyway: Flyway = Flyway
         .configure()
-        .dataSource("jdbc:mysql://host.docker.internal:3306/oshikara", "user", "password")
+        .dataSource("jdbc:mysql://localhost:3306/oshikara", "user", "password")
         .load()
 
     fun setup() {
         flyway.migrate()
         Database.connect(
-            url = "jdbc:mysql://host.docker.internal:3306/oshikara",
+            url = "jdbc:mysql://localhost:3306/oshikara",
             driver = "com.mysql.cj.jdbc.Driver",
             user = "user",
             password = "password"
