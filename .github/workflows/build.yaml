@@ -7,7 +7,7 @@
 
 name: Java CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -17,19 +17,20 @@ jobs:
       db:
         image: mysql:8.0
         ports:
-          - "3306:3306"
-      env:
-        MYSQL_DATABASE: oshikara
-        MYSQL_USER: user
-        MYSQL_PASSWORD: password
-        MYSQL_ROOT_PASSWORD: rootpassword
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: oshikara
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+          options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 16
+      - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
-          java-version: '16'
+          java-version: '11'
           distribution: 'adopt'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
