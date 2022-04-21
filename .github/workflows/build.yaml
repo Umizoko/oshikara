@@ -5,9 +5,12 @@
 
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Java CI
+name: Building and Testing Java with Gradle CI
 
-on: [push, pull_request]
+on:
+  pull_request:
+    types:
+      - opened
 
 jobs:
   build:
@@ -23,7 +26,11 @@ jobs:
           MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: rootpassword
-          options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+          options: >-
+            --health-cmd="mysqladmin ping -h localhost"
+            --health-interval 20s
+            --health-timeout 10s
+            --health-retries 10
 
     steps:
       - uses: actions/checkout@v3
@@ -34,7 +41,7 @@ jobs:
           distribution: 'adopt'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-      - name: Executable with Gradle
+      - name: Setup Gradlew
         run: chmod +x ./gradlew
       - name: Build with Gradle
         uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
