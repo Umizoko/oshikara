@@ -1,4 +1,4 @@
-package com.example.oshikara.scenarioeditor.usecase
+package com.example.oshikara.scenarioeditor.application.talent
 
 import com.example.oshikara.scenarioeditor.domain.talent.Talent
 import com.example.oshikara.scenarioeditor.domain.talent.TalentName
@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-internal class CreateTalentCommandServiceTest {
+internal class CreateTalentUseCaseTest {
 
     private val talentRepository: TalentRepository = mockk()
 
-    private val createTalentCommandService = CreateTalentCommandService(talentRepository)
+    private val createTalentCommandService = CreateTalentUseCase(talentRepository)
 
     @Test
     fun `タレント名を渡すと、その値を使用して新規作成されたタレントが保存される`() {
