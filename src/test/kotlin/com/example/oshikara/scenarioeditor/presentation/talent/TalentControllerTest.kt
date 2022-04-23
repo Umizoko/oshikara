@@ -2,7 +2,7 @@ package com.example.oshikara.scenarioeditor.presentation.talent
 
 import com.example.oshikara.scenarioeditor.application.talent.CreateTalentUseCase
 import com.example.oshikara.scenarioeditor.application.talent.CreateTalentUseCaseDto
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.example.oshikara.scenarioeditor.infrastructure.impl.domain.TestUtil
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
@@ -19,8 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TalentControllerTest {
     private lateinit var mockMvc: MockMvc
-
-    private val mapper = ObjectMapper()
 
     private val createTalentUseCase: CreateTalentUseCase = mockk()
 
@@ -40,7 +38,7 @@ class TalentControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/talents")
-                .content(mapper.writeValueAsString(RequestCreateTalent(talentName)))
+                .content(TestUtil.mapperWriteValueAsString(RequestCreateTalent(talentName)))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated)
             .andExpect(header().string("Location", "http://localhost:8080/talents/$talentId"))

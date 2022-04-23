@@ -1,5 +1,6 @@
 package com.example.oshikara.scenarioeditor.infrastructure.impl.domain
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 
@@ -9,6 +10,8 @@ object TestUtil {
         .configure()
         .dataSource("jdbc:mysql://localhost:3306/oshikara", "user", "password")
         .load()
+
+    private val mapper = ObjectMapper()
 
     fun setup() {
         flyway.migrate()
@@ -23,4 +26,7 @@ object TestUtil {
     fun teardown() {
         flyway.clean()
     }
+
+    fun mapperWriteValueAsString(value: Any): String =
+        mapper.writeValueAsString(value)
 }
