@@ -34,4 +34,16 @@ internal class CreateTalentUseCaseTest {
         assertEquals(TalentName(talentName), capturedTalent.name)
         assertEquals(TalentStatus.PRIVATE, capturedTalent.status)
     }
+
+    @Test
+    fun `タレント名を渡して、その値を使用して新規作成が成功するとタレントIDを返される`() {
+        val talentCapturingSlot: CapturingSlot<Talent> = slot()
+        every { talentRepository.insert(capture(talentCapturingSlot)) } just Runs
+
+        val talentName = "test taro"
+        val createTalentUseCaseDto = createTalentCommandService.execute(talentName)
+
+        val capturedTalent: Talent = talentCapturingSlot.captured
+        assertEquals(capturedTalent.id.value, createTalentUseCaseDto.talentId)
+    }
 }
