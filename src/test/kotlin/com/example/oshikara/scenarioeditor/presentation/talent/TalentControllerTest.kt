@@ -44,7 +44,7 @@ class TalentControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/talents")
-                .content(TestUtil.mapperWriteValueAsString(RequestCreateTalent(talentName)))
+                .content(TestUtil.mapperWriteValueAsString(CreateTalentRequest(talentName)))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated)
             .andExpect(header().string("Location", "http://localhost:8080/talents/$talentId"))
@@ -65,6 +65,6 @@ class TalentControllerTest {
             .andReturn()
             .response
 
-        assertEquals(talent.id.value, response.contentAsString)
+        assertEquals("{\"id\":\"b3816239-389c-4dc1-a8e8-ccc63d3bc011\",\"name\":\"tanaka taro\",\"status\":\"PRIVATE\"}", response.contentAsString)
     }
 }

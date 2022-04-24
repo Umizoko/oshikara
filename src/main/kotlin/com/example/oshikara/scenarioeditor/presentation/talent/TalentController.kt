@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
-data class RequestCreateTalent(
+data class CreateTalentRequest(
     val name: String
 )
 
 data class GetTalentResponse(
-    private val id: String,
-    private val name: String,
-    private val status: String
+    val id: String,
+    val name: String,
+    val status: String
 )
 
 @RestController
@@ -30,7 +30,7 @@ class TalentController(
 ) {
 
     @PostMapping("/talents")
-    fun create(@RequestBody talent: RequestCreateTalent): ResponseEntity<String> {
+    fun create(@RequestBody talent: CreateTalentRequest): ResponseEntity<String> {
         val createTalentUseCaseDto = createTalentUseCase.execute(talent.name)
         return ResponseEntity
             .created(URI.create("http://localhost:8080").resolve("/talents/${createTalentUseCaseDto.talentId}"))
