@@ -2,9 +2,13 @@ package com.example.oshikara.scenarioeditor.presentation.talent
 
 import com.example.oshikara.scenarioeditor.application.talent.CreateTalentUseCase
 import com.example.oshikara.scenarioeditor.application.talent.CreateTalentUseCaseDto
+import com.example.oshikara.scenarioeditor.application.talent.FetchTalentUseCase
+import com.example.oshikara.scenarioeditor.application.talent.FetchTalentUseCaseDto
+import com.example.oshikara.scenarioeditor.infrastructure.factory.TestTalentFactory
 import com.example.oshikara.scenarioeditor.infrastructure.impl.domain.TestUtil
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -22,11 +26,13 @@ class TalentControllerTest {
 
     private val createTalentUseCase: CreateTalentUseCase = mockk()
 
-    private val targetController = TalentController(createTalentUseCase)
+    private val fetchTalentUseCase: FetchTalentUseCase = mockk()
+
+    private val talentController = TalentController(createTalentUseCase, fetchTalentUseCase)
 
     @BeforeEach
     fun setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(targetController).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(talentController).build()
     }
 
     @Test
@@ -38,10 +44,27 @@ class TalentControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/talents")
-                .content(TestUtil.mapperWriteValueAsString(RequestCreateTalent(talentName)))
+                .content(TestUtil.mapperWriteValueAsString(CreateTalentRequest(talentName)))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated)
             .andExpect(header().string("Location", "http://localhost:8080/talents/$talentId"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    }
+
+    @Test
+    fun `タレントIDでgetして成功した場合、200でタレントID、名前、ステータスを返す`() {
+        val talent = TestTalentFactory.create()
+        every { fetchTalentUseCase.execute(talent.id) } returns FetchTalentUseCaseDto(talent)
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/talents/${talent.id.value}")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .response
+
+        assertEquals("{\"id\":\"b3816239-389c-4dc1-a8e8-ccc63d3bc011\",\"name\":\"tanaka taro\",\"status\":\"PRIVATE\"}", response.contentAsString)
     }
 }

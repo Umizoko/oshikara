@@ -24,7 +24,7 @@ internal class FetchTalentUseCaseTest {
 
         val actualDto = useCase.execute(talent.id)
 
-        val expectDto = FetchTalentDto(
+        val expectDto = FetchTalentUseCaseDto(
             talentId = talent.id.value,
             talentName = talent.name.value,
             talentStatus = talent.status.name

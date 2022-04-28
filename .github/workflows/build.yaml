@@ -35,15 +35,23 @@ jobs:
             --health-retries 10
     steps:
       - name: Checkout project sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Executable Gradlew file
         run: chmod +x ./gradlew
       - name: Run build with Gradle wrapper
-        run: ./gradlew build --scan
-      - name: Upload build reports
-        uses: actions/upload-artifact@v3
+        id: gradle
+        run: ./gradlew build --scan  --stacktrace
+      - name: "Add build scan URL as PR comment"
+        uses: actions/github-script@v5
+        if: github.event_name == 'pull_request' && failure()
         with:
-          name: build-reports
-          path: build/reports/
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ ${{ github.workflow }} failed: ${{ steps.gradle.outputs.build-scan-url }}'
+            })
