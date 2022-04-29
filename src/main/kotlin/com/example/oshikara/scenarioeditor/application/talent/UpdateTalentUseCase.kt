@@ -16,7 +16,7 @@ class UpdateTalentUseCase(
         val talent = talentRepository.findById(command.talentId)
             ?: throw Exception("not exist talent")
 
-        if (command.talentName != null ) {
+        if (command.talentName != null) {
             talent.changeName(command.talentName)
         }
 
