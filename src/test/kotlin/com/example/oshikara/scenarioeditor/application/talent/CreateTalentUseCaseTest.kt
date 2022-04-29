@@ -19,7 +19,7 @@ internal class CreateTalentUseCaseTest {
 
     private val talentRepository: TalentRepository = mockk()
 
-    private val createTalentCommandService = CreateTalentUseCase(talentRepository)
+    private val createTalentUseCase = CreateTalentUseCase(talentRepository)
 
     @Test
     fun `タレント名を渡すと、その値を使用して新規作成されたタレントが保存される`() {
@@ -27,7 +27,7 @@ internal class CreateTalentUseCaseTest {
         every { talentRepository.insert(capture(talentCapturingSlot)) } just Runs
 
         val talentName = "test taro"
-        createTalentCommandService.execute(talentName)
+        createTalentUseCase.execute(talentName)
 
         val capturedTalent: Talent = talentCapturingSlot.captured
 
@@ -41,7 +41,7 @@ internal class CreateTalentUseCaseTest {
         every { talentRepository.insert(capture(talentCapturingSlot)) } just Runs
 
         val talentName = "test taro"
-        val createTalentUseCaseDto = createTalentCommandService.execute(talentName)
+        val createTalentUseCaseDto = createTalentUseCase.execute(talentName)
 
         val capturedTalent: Talent = talentCapturingSlot.captured
         assertEquals(capturedTalent.id.value, createTalentUseCaseDto.talentId)
