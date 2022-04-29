@@ -1,11 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Building and Testing Java with Gradle CI
+name: Building and Testing
 
 on:
   pull_request:
@@ -16,8 +9,6 @@ on:
 
 jobs:
   gradle:
-    runs-on: ubuntu-latest
-
     services:
       db:
         image: mysql:8.0
@@ -33,6 +24,7 @@ jobs:
             --health-interval 20s
             --health-timeout 10s
             --health-retries 10
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v2
@@ -60,8 +52,3 @@ jobs:
               repo: context.repo.repo,
               body: '❌ ${{ github.workflow }} failed: ${{ steps.gradle.outputs.build-scan-url }}'
             })
-      - name: Upload SARIF to Github using the upload-sarif action
-        uses: github/codeql-action/upload-sarif@v1
-        if: success() || failure()
-        with:
-          sarif_file: build/detekt.sarif
