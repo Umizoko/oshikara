@@ -13,6 +13,7 @@ import io.mockk.mockk
 import io.mockk.slot
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
@@ -39,5 +40,21 @@ internal class UpdateTalentUseCaseTest {
 
         assertEquals(command.talentId, capturedTalent.id)
         assertEquals(command.talentName, capturedTalent.name)
+    }
+
+    @Test
+    fun `タレントIDを渡して、findByIdで見つからないとき例外になる`() {
+        val talent = TestTalentFactory.create()
+        every { talentRepository.findById(talent.id) } returns null
+
+        val command = UpdateTalentUseCaseCommand(
+            talentId = talent.id,
+            talentName = TalentName("name after update")
+        )
+
+        val exception = assertThrows<UpdateTalentUseCaseException.NotFoundTalentException> {
+            updateTalentUseCase.execute(command)
+        }
+        assertEquals(exception.message, "Not found talent resource. talentId: ${talent.id.value}")
     }
 }
