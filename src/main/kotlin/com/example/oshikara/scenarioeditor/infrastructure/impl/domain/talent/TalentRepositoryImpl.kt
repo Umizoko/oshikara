@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.update
 import org.springframework.stereotype.Component
 
 @Component
-class TalentRepositoryImpl() : TalentRepository {
+class TalentRepositoryImpl : TalentRepository {
     override fun insert(talent: Talent) {
         transaction {
             Talents.insert {
