@@ -65,6 +65,9 @@ class TalentControllerTest {
             .andReturn()
             .response
 
-        assertEquals("{\"id\":\"b3816239-389c-4dc1-a8e8-ccc63d3bc011\",\"name\":\"tanaka taro\",\"status\":\"PRIVATE\"}", response.contentAsString)
+        assertEquals(
+            "{\"id\":\"b3816239-389c-4dc1-a8e8-ccc63d3bc011\",\"name\":\"tanaka taro\",\"status\":\"PRIVATE\"}",
+            response.contentAsString
+        )
     }
 }
