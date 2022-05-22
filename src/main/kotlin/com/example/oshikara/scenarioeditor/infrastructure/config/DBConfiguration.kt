@@ -12,10 +12,10 @@ class DBConfiguration {
         // FIXME : 接続情報は外部設定から読み込むようにする
         // FIXME : クレデンシャル情報も同様
         Database.connect(
-            url = "jdbc:mysql://localhost:3306/oshikara",
-            driver = "com.mysql.cj.jdbc.Driver",
-            user = "user",
-            password = "password"
+            url = "jdbc:h2:mem:oshikara",
+            driver = "org.h2.Driver",
+            user = "oshikara",
+            password = "oshikara"
         )
     }
 }

@@ -8,7 +8,7 @@ object TestUtil {
 
     private val flyway: Flyway = Flyway
         .configure()
-        .dataSource("jdbc:mysql://localhost:3306/oshikara", "user", "password")
+        .dataSource("jdbc:h2:mem:oshikara", "oshikara", "oshikara")
         .load()
 
     private val mapper = ObjectMapper()
@@ -16,10 +16,10 @@ object TestUtil {
     fun setup() {
         flyway.migrate()
         Database.connect(
-            url = "jdbc:mysql://localhost:3306/oshikara",
-            driver = "com.mysql.cj.jdbc.Driver",
-            user = "user",
-            password = "password"
+            url = "jdbc:h2:mem:oshikara",
+            driver = "org.h2.Driver",
+            user = "oshikara",
+            password = "oshikara"
         )
     }
 
