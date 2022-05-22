@@ -8,7 +8,7 @@ on:
       - reopened
 
 jobs:
-  without-type-resolution:
+  analyze:
     runs-on: ubuntu-latest
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
