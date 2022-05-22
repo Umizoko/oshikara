@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: target/oshikara-0.0.2-SNAPSHOT.jar #自動でファイル名を取得するようにする
+          path: build/libs/oshikara-0.0.2-SNAPSHOT.jar #自動でファイル名を取得するようにする
   deploy:
     needs: build
     runs-on: ubuntu-latest
