@@ -9,21 +9,6 @@ on:
 
 jobs:
   gradle:
-    services:
-      db:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_DATABASE: oshikara
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: rootpassword
-          options: >-
-            --health-cmd="mysqladmin ping -h localhost"
-            --health-interval 20s
-            --health-timeout 10s
-            --health-retries 10
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources

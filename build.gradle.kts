@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     runtimeOnly("mysql:mysql-connector-java:8.0.28")
+    implementation("com.h2database:h2:2.1.212")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.7")
     implementation("org.springframework.boot:spring-boot-starter-web:2.6.7")
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.7")
