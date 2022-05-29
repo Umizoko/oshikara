@@ -22,6 +22,7 @@ dependencies {
     implementation("com.h2database:h2:2.1.212")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.7")
     implementation("org.springframework.boot:spring-boot-starter-web:2.6.7")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.7")
     testImplementation("io.mockk:mockk:1.12.4")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")

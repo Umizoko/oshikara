@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class DBConfiguration {
+class DbConfiguration {
 
     @Bean
-    fun getDBConnection() {
+    fun getDbConnection() {
         // FIXME : 接続情報は外部設定から読み込むようにする
         // FIXME : クレデンシャル情報も同様
         Database.connect(
