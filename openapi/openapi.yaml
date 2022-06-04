@@ -97,7 +97,6 @@ components:
         - id: 41a78b0f-7804-4c17-80a2-f54a672b60d7
           name: umizoko ☆ hirame
           status: PRIVATE
-          '': string
       properties:
         id:
           type: string
