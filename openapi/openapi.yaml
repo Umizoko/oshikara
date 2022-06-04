@@ -1,0 +1,121 @@
+openapi: 3.1.0
+x-stoplight:
+  id: nw6lvcv7gx5o4
+info:
+  title: oshikara API
+  version: '1.0'
+  description: This page is oshikara' web api
+  contact:
+    name: umizoko hirame
+    url: 'https://umizoko.dev'
+    email: 0123mark3210@gmail.com
+  license:
+    name: 'Apache License, Version 2.0'
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+servers:
+  - url: 'http://localhost:3000'
+    description: Local
+paths:
+  /talents:
+    post:
+      summary: Create New Talent
+      operationId: post-talent
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Talent'
+              examples:
+                Create Talent Umizoko Hirame:
+                  value:
+                    id: 41a78b0f-7804-4c17-80a2-f54a672b60d7
+                    name: umizoko ☆ hirame
+                    status: PRIVATE
+                    '': string
+          headers: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            examples:
+              Create Talent Umizoko Hirame:
+                value:
+                  name: umizoko hirame
+        description: Post the necessary fields for the API to create a new talent.
+      description: Create a new talent.
+      tags:
+        - Talents
+    parameters: []
+  '/talents/{talentId}':
+    get:
+      summary: Get Talent by Talent ID
+      tags:
+        - Talents
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Talent'
+              examples:
+                Get Talent Umizoko Hirame:
+                  value:
+                    id: 41a78b0f-7804-4c17-80a2-f54a672b60d7
+                    name: umizoko ☆ hirame
+                    status: PRIVATE
+                    '': string
+        '404':
+          description: Not Found
+      operationId: get-talents-talentId
+      description: Retrieve the information of the talent with the matching talent ID.
+      parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: talentId
+        in: path
+        required: true
+        description: Id of an existing talent.
+components:
+  schemas:
+    Talent:
+      title: Talent
+      x-stoplight:
+        id: nk3u7zgcd10zt
+      type: object
+      description: タレントモデル
+      examples:
+        - id: 41a78b0f-7804-4c17-80a2-f54a672b60d7
+          name: umizoko ☆ hirame
+          status: PRIVATE
+      properties:
+        id:
+          type: string
+          example: 41a78b0f-7804-4c17-80a2-f54a672b60d7
+          format: uuid
+          description: タレントリソースを示す一意識別子
+        name:
+          type: string
+          example: umizoko ☆ hirame
+          description: タレントの名前
+        status:
+          type: string
+          enum:
+            - PRIVATE
+            - PUBLIC
+          example: PRIVATE
+          description: タレントの可視性
+      required:
+        - id
+        - name
+        - status
+  securitySchemes: {}
